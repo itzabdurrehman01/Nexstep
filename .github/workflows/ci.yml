@@ -1,0 +1,55 @@
+name: NexStep CI Pipeline & ML Guardrails
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  ci-build-and-test:
+    name: Build, Lint & Automated Guardrails
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pandas scikit-learn numpy
+
+      - name: Install Frontend Dependencies
+        run: npm --prefix frontend install
+
+      - name: Install Backend Dependencies
+        run: npm --prefix backend install
+
+      - name: Backend Typecheck & Lint
+        run: npm --prefix backend run lint
+
+      - name: Run Python ML Unit & Guardrail Tests
+        run: python -m pytest ml/tests -v
+
+      - name: Run Backend Automated Guardrail Test Suite
+        run: npm --prefix backend run guardrails
+
+      - name: Run Frontend Vitest Component Suite
+        run: npm --prefix frontend run test
+
+      - name: Frontend Typecheck
+        run: npm --prefix frontend run lint
+
+      - name: Frontend Production Build
+        run: npm --prefix frontend run build
