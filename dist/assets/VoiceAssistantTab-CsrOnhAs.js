@@ -1,0 +1,1 @@
+import{j as s}from"./index-DMKC8AJz.js";import"./ui-vendor-BKlxC69u.js";import{A as o}from"./AiVoiceAssistant-6DwqwnDq.js";import"./chart-vendor-CKJCSvv2.js";function n({profile:t,lang:i="en"}){return s.jsx("div",{className:"max-w-4xl mx-auto space-y-6",children:s.jsx(o,{profile:t??{},lang:i})})}export{n as VoiceAssistantTab,n as default};

@@ -1,0 +1,1 @@
+import{j as o}from"./index-DMKC8AJz.js";import"./ui-vendor-BKlxC69u.js";import{C as t}from"./CareerComparisonTool-BexMiDCH.js";import"./chart-vendor-CKJCSvv2.js";import"./careersData-cDAemtLQ.js";function s({lang:r="en"}){return o.jsx(t,{lang:r})}export{s as CareerComparisonTab,s as default};
