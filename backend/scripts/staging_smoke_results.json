@@ -1,0 +1,169 @@
+{
+  "timestamp": "2026-09-22T21:57:55.252Z",
+  "environment": "staging",
+  "commit": "HEAD",
+  "summary": {
+    "totalApiTests": 13,
+    "passedApiTests": 13,
+    "totalAuthTests": 5,
+    "passedAuthTests": 5,
+    "databaseTablesVerified": 7
+  },
+  "tableCounts": {
+    "universities": 122,
+    "scholarships": 84,
+    "courses": 74,
+    "careers": 49,
+    "jobs": 6454,
+    "data_sources": 10,
+    "rejected_records": 4
+  },
+  "apiResults": [
+    {
+      "endpoint": "/api/jobs",
+      "status": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "itemCount": 12,
+      "details": "Success (12 items)"
+    },
+    {
+      "endpoint": "/api/jobs?page=1&limit=5",
+      "status": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "itemCount": 5,
+      "details": "Success (5 items)"
+    },
+    {
+      "endpoint": "/api/jobs?keyword=Software",
+      "status": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "itemCount": 12,
+      "details": "Success (12 items)"
+    },
+    {
+      "endpoint": "/api/jobs?keyword=nonexistentterm12345",
+      "status": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "itemCount": 0,
+      "details": "Success (0 items)"
+    },
+    {
+      "endpoint": "/api/scholarships",
+      "status": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "itemCount": 12,
+      "details": "Success (12 items)"
+    },
+    {
+      "endpoint": "/api/scholarships?page=1&limit=5",
+      "status": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "itemCount": 5,
+      "details": "Success (5 items)"
+    },
+    {
+      "endpoint": "/api/universities",
+      "status": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "itemCount": 12,
+      "details": "Success (12 items)"
+    },
+    {
+      "endpoint": "/api/universities?page=1&limit=5",
+      "status": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "itemCount": 5,
+      "details": "Success (5 items)"
+    },
+    {
+      "endpoint": "/api/courses",
+      "status": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "itemCount": 12,
+      "details": "Success (12 items)"
+    },
+    {
+      "endpoint": "/api/careers",
+      "status": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "itemCount": 12,
+      "details": "Success (12 items)"
+    },
+    {
+      "endpoint": "/api/admissions",
+      "status": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "itemCount": 6,
+      "details": "Success (6 items)"
+    },
+    {
+      "endpoint": "/api/data-sources",
+      "status": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "itemCount": 5,
+      "details": "Success (5 items)"
+    },
+    {
+      "endpoint": "/api/data-freshness",
+      "status": 200,
+      "expectedStatus": 200,
+      "passed": true,
+      "itemCount": 0,
+      "details": "Success (0 items)"
+    }
+  ],
+  "authResults": [
+    {
+      "role": "UNAUTHENTICATED",
+      "endpoint": "/api/admin/stats",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": 401,
+      "passed": true
+    },
+    {
+      "role": "UNAUTHENTICATED",
+      "endpoint": "/api/admin/users",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": 401,
+      "passed": true
+    },
+    {
+      "role": "UNAUTHENTICATED",
+      "endpoint": "/api/admin/pending-records",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": 401,
+      "passed": true
+    },
+    {
+      "role": "UNAUTHENTICATED",
+      "endpoint": "/api/admin/rejected-records",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": 401,
+      "passed": true
+    },
+    {
+      "role": "UNAUTHENTICATED",
+      "endpoint": "/api/admin/data-sources/hec-pakistan/sync",
+      "method": "POST",
+      "status": 401,
+      "expectedStatus": 401,
+      "passed": true
+    }
+  ]
+}

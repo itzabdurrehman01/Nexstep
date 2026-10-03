@@ -1,0 +1,32 @@
+# Render Blueprint Manifest for NexStep Staging Deployment
+services:
+  - type: web
+    name: nexstep-backend-staging
+    env: node
+    region: singapore
+    plan: free
+    buildCommand: cd backend && npm install && npm run build
+    startCommand: cd backend && npm run start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: staging
+      - key: PORT
+        value: 3001
+      - key: FRONTEND_URL
+        value: https://nexstep-staging.onrender.com
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+
+  - type: web
+    name: nexstep-frontend-staging
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://nexstep-backend-staging.onrender.com

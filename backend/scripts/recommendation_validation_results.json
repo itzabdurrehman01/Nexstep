@@ -1,0 +1,98 @@
+{
+  "timestamp": "2026-09-22T22:06:25.658Z",
+  "profile1": {
+    "profile": {
+      "name": "Hamza (Strong Fit)",
+      "preferredStream": "ICS",
+      "marks": {
+        "matricPct": 88,
+        "fscPct": 85
+      },
+      "skills": [
+        "Python",
+        "SQL",
+        "Git",
+        "Data Structures"
+      ]
+    },
+    "rec": {
+      "careerTitle": "Data Scientist",
+      "score": 60,
+      "eligible": true,
+      "factorBreakdown": {
+        "streamMatch": 25,
+        "marksScore": 20,
+        "skillsScore": 0,
+        "demandScore": 10
+      },
+      "matchingSkills": [],
+      "missingSkills": [],
+      "provenance": {
+        "officialUrl": "https://pbs.gov.pk/content/labour-force-survey",
+        "verificationStatus": "VERIFIED",
+        "dataYear": 2026
+      }
+    }
+  },
+  "profile2": {
+    "profile": {
+      "name": "Aisha (Partial Fit)",
+      "preferredStream": "ICS",
+      "marks": {
+        "matricPct": 70,
+        "fscPct": 62
+      },
+      "skills": [
+        "HTML",
+        "CSS"
+      ]
+    },
+    "rec": {
+      "careerTitle": "Data Scientist",
+      "score": 50,
+      "eligible": true,
+      "factorBreakdown": {
+        "streamMatch": 25,
+        "marksScore": 15,
+        "skillsScore": 0,
+        "demandScore": 10
+      },
+      "matchingSkills": [],
+      "missingSkills": [],
+      "provenance": {
+        "officialUrl": "https://pbs.gov.pk/content/labour-force-survey",
+        "verificationStatus": "VERIFIED",
+        "dataYear": 2026
+      }
+    }
+  },
+  "profile3": {
+    "profile": {
+      "name": "Zain (Ineligible Profile)",
+      "preferredStream": "Arts",
+      "marks": {
+        "matricPct": 52,
+        "fscPct": 42
+      },
+      "skills": []
+    },
+    "rec": {
+      "careerTitle": "Data Scientist",
+      "score": 20,
+      "eligible": false,
+      "factorBreakdown": {
+        "streamMatch": 10,
+        "marksScore": 5,
+        "skillsScore": 0,
+        "demandScore": 10
+      },
+      "matchingSkills": [],
+      "missingSkills": [],
+      "provenance": {
+        "officialUrl": "https://pbs.gov.pk/content/labour-force-survey",
+        "verificationStatus": "VERIFIED",
+        "dataYear": 2026
+      }
+    }
+  }
+}
