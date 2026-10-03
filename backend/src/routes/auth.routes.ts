@@ -71,21 +71,25 @@ const SALT_ROUNDS = 12;
 const ACCESS_TOKEN_TTL  = '15m';
 const REFRESH_TOKEN_TTL = '7d';
 const COOKIE_MAX_AGE    = 7 * 24 * 60 * 60 * 1000; // 7 days ms
+const JWT_ISSUER         = 'nexstep-api';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function getJwtSecret(): string {
-  const s = process.env.JWT_SECRET;
+  const s = process.env.JWT_SECRET?.trim();
   if (!s) throw new Error('JWT_SECRET not set');
+  if (process.env.NODE_ENV === 'production' && s.length < 32) {
+    throw new Error('JWT_SECRET must be at least 32 characters in production');
+  }
   return s;
 }
 
 function issueAccessToken(userId: string): string {
-  return jwt.sign({ sub: userId }, getJwtSecret(), { expiresIn: ACCESS_TOKEN_TTL });
+  return jwt.sign({ sub: userId, type: 'access' }, getJwtSecret(), { expiresIn: ACCESS_TOKEN_TTL, issuer: JWT_ISSUER });
 }
 
 function issueRefreshToken(userId: string): string {
-  return jwt.sign({ sub: userId, type: 'refresh' }, getJwtSecret(), { expiresIn: REFRESH_TOKEN_TTL });
+  return jwt.sign({ sub: userId, type: 'refresh' }, getJwtSecret(), { expiresIn: REFRESH_TOKEN_TTL, issuer: JWT_ISSUER });
 }
 
 function setCookies(res: Response, accessToken: string, refreshToken: string) {
@@ -143,11 +147,7 @@ function validatePassword(pw: string): string | null {
   return null;
 }
 
-const ALLOWED_PUBLIC_ROLES = new Set(['STUDENT', 'MENTOR', 'RECRUITER']);
-function getSafeRole(role: unknown): 'STUDENT' | 'MENTOR' | 'RECRUITER' {
-  if (typeof role === 'string' && ALLOWED_PUBLIC_ROLES.has(role)) {
-    return role as 'STUDENT' | 'MENTOR' | 'RECRUITER';
-  }
+function getSafeRole(_role: unknown): 'STUDENT' {
   return 'STUDENT';
 }
 
@@ -216,8 +216,6 @@ router.post('/register', async (req: Request, res: Response) => {
 
     res.status(201).json({
       message: 'Account created successfully.',
-      accessToken,
-      refreshToken,
       user: {
         id: userId,
         email: cleanEmail,
@@ -275,8 +273,6 @@ router.post('/login', loginLimiter, async (req: Request, res: Response) => {
 
     res.json({
       message: 'Login successful.',
-      accessToken,
-      refreshToken,
       user: {
         id: user.id,
         email: user.email,
@@ -367,7 +363,7 @@ router.post('/refresh-mobile', async (req: Request, res: Response) => {
 
     let payload: any;
     try {
-      payload = jwt.verify(rawRefresh, getJwtSecret());
+      payload = jwt.verify(rawRefresh, getJwtSecret(), { issuer: JWT_ISSUER });
     } catch (e: any) {
       if (e.name === 'TokenExpiredError')
         return res.status(401).json({ error: 'Session expired. Please log in again.', code: 'REFRESH_EXPIRED' });
@@ -434,7 +430,7 @@ router.post('/refresh', async (req: Request, res: Response) => {
     // Verify JWT signature + expiry first
     let payload: any;
     try {
-      payload = jwt.verify(rawRefresh, getJwtSecret());
+      payload = jwt.verify(rawRefresh, getJwtSecret(), { issuer: JWT_ISSUER });
     } catch (e: any) {
       clearCookies(res);
       if (e.name === 'TokenExpiredError')

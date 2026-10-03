@@ -32,10 +32,15 @@ declare global {
 }
 
 function getJwtSecret(): string {
-  const secret = process.env.JWT_SECRET;
+  const secret = process.env.JWT_SECRET?.trim();
   if (!secret) throw new Error('JWT_SECRET environment variable is not set');
+  if (process.env.NODE_ENV === 'production' && secret.length < 32) {
+    throw new Error('JWT_SECRET must be at least 32 characters in production');
+  }
   return secret;
 }
+
+const JWT_ISSUER = 'nexstep-api';
 
 function extractToken(req: Request): string | null {
   // 1. HttpOnly cookie (preferred — not accessible to JS)
@@ -58,7 +63,14 @@ export function requireAuth() {
     }
 
     try {
-      const payload = jwt.verify(token, getJwtSecret()) as { sub: string };
+      const payload = jwt.verify(token, getJwtSecret(), { issuer: JWT_ISSUER }) as { sub: string; type?: string };
+
+      if (payload.type !== 'access') {
+        return res.status(401).json({
+          error: 'Invalid authentication token.',
+          code: 'TOKEN_INVALID',
+        });
+      }
 
       const user = await queryOne<any>(
         `SELECT id, email, first_name, last_name, role, is_verified, is_active
@@ -168,7 +180,8 @@ export function optionalAuth() {
     if (!token) return next();
 
     try {
-      const payload = jwt.verify(token, getJwtSecret()) as { sub: string };
+      const payload = jwt.verify(token, getJwtSecret(), { issuer: JWT_ISSUER }) as { sub: string; type?: string };
+      if (payload.type !== 'access') return next();
       const user = await queryOne<any>(
         `SELECT id, email, first_name, last_name, role, is_verified
          FROM users WHERE id = $1 AND is_active = TRUE`,
